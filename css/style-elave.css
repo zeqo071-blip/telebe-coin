@@ -1,6 +1,6 @@
 /* =====================================================================
    ƏLAVƏLƏR: header, mikro-interaksiyalar, səhifə keçidi, alt səhifələr
-   DİQQƏT: bu hissəni mövcud css/style.css faylının SONUNA əlavə et.
+   Bu fayl HTML-də style.css-dən SONRA qoşulur.
    ===================================================================== */
 :root { --header-h: 4rem; }
 html { background: var(--bg); }   /* keçiddə ağ yanıb-sönmə olmasın */
