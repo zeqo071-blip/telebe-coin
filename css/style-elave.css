@@ -1,0 +1,212 @@
+/* =====================================================================
+   ƏLAVƏLƏR: header, mikro-interaksiyalar, səhifə keçidi, alt səhifələr
+   DİQQƏT: bu hissəni mövcud css/style.css faylının SONUNA əlavə et.
+   ===================================================================== */
+:root { --header-h: 4rem; }
+html { background: var(--bg); }   /* keçiddə ağ yanıb-sönmə olmasın */
+
+/* ===== Səhifə keçidi (cross-document View Transitions) ===== */
+@view-transition { navigation: auto; }
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: 300ms; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation-duration: 0.01ms; }
+}
+
+/* ===== Skip link ===== */
+.skip-link {
+  position: absolute; z-index: 100; left: var(--space-4); top: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--r-pill);
+  font-weight: var(--fw-semibold); text-decoration: none;
+  transform: translateY(-300%);
+}
+.skip-link:focus-visible { transform: none; }
+
+/* ===== Header ===== */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  padding: env(safe-area-inset-top, 0px) var(--space-5) 0;
+}
+.site-header::before {            /* fon ayrıca qatdadır: yalnız opacity animasiya olunur */
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  opacity: 0; transition: opacity var(--dur) var(--ease-out);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) and (background: color-mix(in srgb, red 50%, blue)) {
+  .site-header::before {
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+            backdrop-filter: blur(14px) saturate(1.4);
+  }
+}
+.site-header.is-scrolled::before { opacity: 1; }
+
+.site-header__inner {
+  position: relative; display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between;
+  gap: var(--space-2) var(--space-4); min-height: var(--header-h);
+}
+.site-header__brand {
+  position: relative; z-index: 2; display: inline-flex; align-items: center; min-height: 2.75rem;
+  color: var(--text); text-decoration: none;
+  font: var(--fw-bold) var(--text-lg)/1 var(--font-display); letter-spacing: var(--tracking-heading);
+}
+
+/* Naviqasiya (əsas hal: JS yoxdursa sətir kimi görünür) */
+.site-nav__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.site-nav a {
+  position: relative; display: inline-flex; align-items: center; min-height: 2.75rem;
+  padding: 0 var(--space-4); border-radius: var(--r-pill);
+  color: var(--text-muted); text-decoration: none; font-weight: var(--fw-medium);
+}
+.site-nav a::after {
+  content: ""; position: absolute; left: var(--space-4); right: var(--space-4); bottom: .45rem;
+  height: 2px; border-radius: var(--r-pill); background: var(--grad-brand);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+.site-nav a[aria-current="page"] { color: var(--text); }
+.site-nav a[aria-current="page"]::after { transform: scaleX(1); }
+@media (hover: hover) {
+  .site-nav a:hover { color: var(--text); }
+  .site-nav a:hover::after { transform: scaleX(1); }
+}
+
+/* Hamburger */
+.nav-toggle {
+  display: none; position: relative; z-index: 2; width: 2.75rem; height: 2.75rem; padding: 0;
+  border: 1px solid var(--border); border-radius: var(--r-pill);
+  background: var(--surface-2); color: var(--text); cursor: pointer;
+}
+.nav-toggle__bar {
+  position: absolute; left: 50%; top: calc(50% - 1px);
+  width: 1.1rem; height: 2px; margin-left: -.55rem; border-radius: var(--r-pill);
+  background: currentColor;
+  transition: transform var(--dur) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+.nav-toggle__bar:nth-child(1) { transform: translateY(-5px); }
+.nav-toggle__bar:nth-child(3) { transform: translateY(5px); }
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(1) { transform: rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(3) { transform: rotate(-45deg); }
+
+/* Mobil menyu paneli (yalnız JS aktivdirsə) */
+@media (max-width: 47.99rem) {
+  .js .nav-toggle { display: inline-block; }
+  .js .site-nav {
+    position: fixed; inset: 0; z-index: 1;
+    padding: calc(var(--header-h) + env(safe-area-inset-top, 0px) + var(--space-6)) var(--space-5) calc(var(--space-8) + env(safe-area-inset-bottom, 0px));
+    background: var(--bg); overflow-y: auto; overscroll-behavior: contain;
+    opacity: 0; visibility: hidden; transform: translateY(-8px);
+    transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), visibility 0s linear var(--dur);
+  }
+  .js .nav-toggle[aria-expanded="true"] ~ .site-nav {
+    opacity: 1; visibility: visible; transform: none; transition-delay: 0s;
+  }
+  .js .site-nav__list { flex-direction: column; gap: var(--space-2); }
+  .js .site-nav a {
+    min-height: 3.5rem; font: var(--fw-bold) var(--text-2xl)/var(--lh-snug) var(--font-display);
+    letter-spacing: var(--tracking-heading);
+  }
+  .js .site-nav a::after { bottom: .6rem; }
+}
+html.nav-open, html.nav-open body { overflow: hidden; }   /* menyu açıqkən scroll yoxdur */
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header::before, .site-nav, .site-nav a::after, .nav-toggle__bar { transition: none; }
+}
+
+/* Header sticky olduğu üçün hero və anchor mövqeləri düzəlir */
+.hero {
+  min-height: calc(100vh - var(--header-h) - env(safe-area-inset-top, 0px));
+  min-height: calc(100svh - var(--header-h) - env(safe-area-inset-top, 0px));
+  padding-top: var(--space-6);
+}
+section[id] { scroll-margin-top: calc(var(--header-h) + env(safe-area-inset-top, 0px) + var(--space-4)); }
+
+/* ===== Xüsusi kursor (elementləri yalnız JS yaradır) ===== */
+.cursor-dot, .cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;
+  opacity: 0; will-change: transform;
+  transition: opacity var(--dur) var(--ease-out);
+}
+.cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--primary); }
+.cursor-ring { width: 36px; height: 36px; margin: -18px 0 0 -18px; }
+.cursor-ring::before, .cursor-ring::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
+}
+.cursor-ring::after  { border: 1.5px solid var(--primary); opacity: .55; }
+.cursor-ring::before { background: var(--primary); opacity: 0; }
+.cursor-dot.is-visible, .cursor-ring.is-visible { opacity: 1; }
+.cursor-ring.is-hover::after  { transform: scale(1.6); opacity: .9; }
+.cursor-ring.is-hover::before { transform: scale(1.6); opacity: .12; }
+.cursor-ring.is-down::after, .cursor-ring.is-down::before { transform: scale(.8); }
+.cursor-ring.is-hover.is-down::after, .cursor-ring.is-hover.is-down::before { transform: scale(1.35); }
+
+/* ===== Maqnit düymə (translate: hover/active transform-u ilə toqquşmur) ===== */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .btn-primary {
+    transition: transform var(--dur-fast) var(--ease-out),
+                box-shadow var(--dur) var(--ease-out),
+                filter var(--dur) var(--ease-out),
+                translate var(--dur) var(--ease-out);
+  }
+}
+
+/* ===== Kart hover: 4px yuxarı + güclü kölgə (yalnız transform/opacity) ===== */
+.perk, .quote { position: relative; }
+.perk::after, .quote::after, .step::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: var(--shadow-3); opacity: 0;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .perk, .quote, .step { transition: translate var(--dur) var(--ease-out); }
+  .perk::after, .quote::after, .step::after { transition: opacity var(--dur) var(--ease-out); }
+  .step::before, .step__dot { transition: translate var(--dur) var(--ease-out); }
+
+  .perk:hover, .quote:hover, .step:hover { translate: 0 -4px; }
+  .perk:hover::after, .quote:hover::after, .step:hover::after { opacity: 1; }
+  /* addım nöqtəsi xəttin üstündə qalsın */
+  .step:hover::before, .step:hover .step__dot { translate: 0 4px; }
+}
+
+/* ===== Alt səhifələr ===== */
+.page-hero { position: relative; isolation: isolate; overflow: hidden; padding: var(--space-12) var(--space-5) var(--space-4); }
+.page-hero::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  top: -60%; right: -20%; width: 70vmax; height: 70vmax;
+  background: radial-gradient(closest-side, rgb(108 75 240 / .18), transparent);
+}
+.page-hero__title {
+  margin: 0; font: var(--fw-black) var(--text-4xl)/var(--lh-tight) var(--font-display);
+  letter-spacing: var(--tracking-display); text-wrap: balance;
+}
+.page-hero__lead { margin: var(--space-4) 0 0; max-width: 52ch; color: var(--text-muted); font-size: var(--text-lg); }
+@media (min-width: 48rem) { .page-hero { padding-top: var(--space-16); } }
+
+.prose { max-width: 62ch; }
+.prose p { margin: 0 0 var(--space-4); color: var(--text-muted); font-size: var(--text-lg); }
+.prose p:last-child { margin-bottom: 0; }
+
+.todo {      /* [BURAYA YAZ] yer tutucuları */
+  display: block; padding: var(--space-4) var(--space-5);
+  border: 1px dashed var(--border); border-radius: var(--r-md);
+  background: var(--surface-2); color: var(--text-muted);
+}
+
+@media (min-width: 48rem) { .perks--3 { grid-template-columns: repeat(3, 1fr); } }
+ol.perks { counter-reset: none; }
+.perk .step__num { margin-bottom: var(--space-4); }
+.perk .step__num + .perk__title { margin-top: 0; }
+.perk__title .coin-dot { margin-inline-start: var(--space-2); vertical-align: -.1em; }
+
+.perk--action { display: flex; flex-direction: column; align-items: flex-start; }
+.perk--action .perk__text { margin-bottom: var(--space-5); }
+.perk--action .perk__text.todo { align-self: stretch; margin-bottom: 0; }
+.perk--action .btn { margin-top: auto; }
+
+.cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); margin-top: var(--space-8); }
+.cta__actions .btn { margin-top: 0; }

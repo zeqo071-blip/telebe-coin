@@ -1,0 +1,10 @@
+Tələbə Coin – sayt faylları
+
+Bu arxivdə var:
+  index.html, haqqimizda.html, elaqe.html
+  js/interactions.js, js/nav.js
+  css/style-elave.css  (yeni əlavələr)
+
+Bu arxivdə YOXDUR (əvvəlki söhbətdə göndərilməyib):
+  css/style.css  -> mövcud faylını saxla, style-elave.css-in məzmununu onun SONUNA əlavə et
+  js/scroll.js, js/hero.js  -> index.html bunlara istinad edir
