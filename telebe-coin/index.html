@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>Kömək et, coin qazan.</title>
+  <meta name="description" content="Tələbələrin bir-birinə dərsdə kömək edib coin qazandığı və coinlə kömək aldığı platforma.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__inner">
+
+        <div class="hero__copy">
+          <h1 class="hero__title" id="hero-title">Kömək et, coin qazan.</h1>
+          <p class="hero__lead">Tələbələrin bir-birinə dərsdə kömək edib coin qazandığı və coinlə kömək aldığı platforma.</p>
+          <div class="hero__actions">
+            <a class="btn btn-primary" href="#basla">Başla</a>
+            <a class="btn btn-secondary" href="#nece-isleyir">Necə işləyir?</a>
+          </div>
+        </div>
+
+        <!-- Statik coin həmişə var; 3D hazır olanda .is-3d əlavə olunur -->
+        <div class="hero__stage" data-coin-stage aria-hidden="true">
+          <div class="coin-static"><span>100</span></div>
+          <canvas class="coin-canvas"></canvas>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/hero.js"></script>
+</body>
+</html>
