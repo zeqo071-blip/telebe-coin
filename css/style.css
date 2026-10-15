@@ -156,3 +156,159 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .btn, .coin-canvas, .coin-static { transition: none; }
 }
+
+/* ===== Layout ===== */
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+section[id] { scroll-margin-top: var(--space-4); }
+.container { width: min(100%, 72rem); margin-inline: auto; }
+.section { padding: var(--space-16) var(--space-5); }
+@media (min-width: 48rem) { .section { padding-block: var(--space-24); } }
+
+.section__head { margin-bottom: var(--space-10); }
+.section__title {
+  margin: 0; font: var(--fw-bold) var(--text-3xl)/var(--lh-snug) var(--font-display);
+  letter-spacing: var(--tracking-heading); text-wrap: balance;
+}
+.section__lead { margin: var(--space-3) 0 0; max-width: 52ch; color: var(--text-muted); font-size: var(--text-lg); }
+
+/* ===== Coin ikonu (qızıl yalnız burada) ===== */
+.coin-dot {
+  display: inline-block; flex: none; width: 1.25rem; height: 1.25rem; border-radius: 50%;
+  background: var(--grad-coin);
+  box-shadow: var(--glow-coin), inset 0 0 0 2px var(--coin-deep);
+}
+.coin-dot--lg {
+  width: 3.5rem; height: 3.5rem;
+  box-shadow: var(--glow-coin), inset 0 0 0 4px var(--coin-deep), inset 0 0 0 6px var(--gold-300);
+}
+
+/* ===== Addımlar ===== */
+.steps-wrap { position: relative; padding-left: var(--space-10); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-5); }
+
+.steps__track {
+  position: absolute; left: .5rem; top: 2.75rem; bottom: 0; width: 2px;
+  background: var(--border); border-radius: var(--r-pill); overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 4rem), transparent);
+          mask-image: linear-gradient(to bottom, #000 calc(100% - 4rem), transparent);
+}
+.steps__fill { position: absolute; inset: 0; background: var(--grad-brand); transform-origin: top; }
+
+.step {
+  position: relative; padding: var(--space-6);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); box-shadow: var(--shadow-1);
+}
+.step__glow {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: var(--glow-violet); opacity: 0;
+}
+.step::before, .step__dot {
+  content: ""; position: absolute; width: 12px; height: 12px; border-radius: 50%;
+  left: calc(-2rem - 5px); top: calc(var(--space-6) + 1.25rem - 6px);
+}
+.step::before { background: var(--surface-2); box-shadow: 0 0 0 2px var(--border); }
+.step__dot { background: var(--grad-brand); box-shadow: var(--glow-violet); }
+
+.step__num {
+  display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%;
+  background: var(--grad-brand); color: var(--on-primary);
+  font: var(--fw-bold) var(--text-base)/1 var(--font-display);
+  margin-bottom: var(--space-4);
+}
+.step__title {
+  display: flex; align-items: center; gap: var(--space-2); margin: 0;
+  font: var(--fw-bold) var(--text-xl)/var(--lh-snug) var(--font-display);
+  letter-spacing: var(--tracking-heading);
+}
+.step__text { margin: var(--space-2) 0 0; color: var(--text-muted); }
+
+@media (min-width: 48rem) {
+  .steps-wrap { padding-left: 0; padding-top: var(--space-10); }
+  .steps { grid-template-columns: repeat(3, 1fr); }
+  .steps__track {
+    left: 0; right: 0; top: .5rem; bottom: auto; width: auto; height: 2px;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 4rem), transparent);
+            mask-image: linear-gradient(to right, #000 calc(100% - 4rem), transparent);
+  }
+  .steps__fill { transform-origin: left; }
+  .step::before, .step__dot { left: calc(var(--space-6) + 1.25rem - 6px); top: calc(-2rem - 5px); }
+}
+
+/* ===== Üstünlüklər ===== */
+.perks { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+@media (min-width: 40rem) { .perks { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 64rem) { .perks { grid-template-columns: repeat(4, 1fr); } }
+
+.perk {
+  padding: var(--space-6); background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-1);
+}
+.perk__icon {
+  display: grid; place-items: center; width: 2.75rem; height: 2.75rem;
+  border-radius: var(--r-md); background: var(--grad-brand); color: var(--on-primary);
+  box-shadow: var(--highlight);
+}
+.perk__icon svg {
+  width: 1.4rem; height: 1.4rem; fill: none; stroke: currentColor;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+.perk__title {
+  margin: var(--space-5) 0 0; font: var(--fw-bold) var(--text-lg)/var(--lh-snug) var(--font-display);
+  letter-spacing: var(--tracking-heading);
+}
+.perk__text { margin: var(--space-2) 0 0; color: var(--text-muted); font-size: var(--text-sm); }
+
+/* ===== Rəylər (nümunə) ===== */
+.quotes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+@media (min-width: 48rem) { .quotes { grid-template-columns: repeat(3, 1fr); } }
+
+.quote {
+  height: 100%; margin: 0; padding: var(--space-6);
+  display: flex; flex-direction: column; gap: var(--space-4);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); box-shadow: var(--shadow-1);
+}
+.quote__tag {
+  align-self: flex-start; padding: var(--space-1) var(--space-3);
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-pill);
+  color: var(--text-muted); font-size: var(--text-xs); font-weight: var(--fw-medium);
+}
+.quote__text { margin: 0; }
+.quote__text p { margin: 0; font-size: var(--text-lg); font-weight: var(--fw-medium); }
+.quote__who { margin-top: auto; color: var(--text-muted); font-size: var(--text-sm); }
+
+/* ===== Son çağırış ===== */
+.cta {
+  position: relative; isolation: isolate; overflow: hidden; text-align: center;
+  padding: var(--space-12) var(--space-6);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-xl); box-shadow: var(--shadow-3), var(--highlight);
+}
+.cta::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  top: -40%; left: 50%; width: 120%; aspect-ratio: 1; transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgb(108 75 240 / .18), transparent);
+}
+.cta__title {
+  margin: var(--space-5) auto 0; max-width: 16ch;
+  font: var(--fw-black) var(--text-4xl)/var(--lh-tight) var(--font-display);
+  letter-spacing: var(--tracking-display); text-wrap: balance;
+}
+.cta__text { margin: var(--space-4) auto 0; max-width: 44ch; color: var(--text-muted); font-size: var(--text-lg); }
+.cta .btn { margin-top: var(--space-8); min-width: min(100%, 14rem); }
+
+/* ===== Footer ===== */
+.footer {
+  padding: var(--space-10) var(--space-5) calc(var(--space-10) + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border);
+}
+.footer__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-6); }
+.footer__brand { margin: 0; font: var(--fw-bold) var(--text-lg)/var(--lh-snug) var(--font-display); }
+.footer__note { margin: var(--space-1) 0 0; color: var(--text-muted); font-size: var(--text-sm); }
+.footer__links { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--space-6); }
+.footer__links a {
+  display: inline-flex; align-items: center; min-height: 2.75rem;
+  color: var(--text-muted); text-decoration: none; font-weight: var(--fw-medium);
+}
+@media (hover: hover) { .footer__links a:hover { color: var(--text); } }
