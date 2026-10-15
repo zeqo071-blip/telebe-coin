@@ -126,26 +126,6 @@ html.nav-open, html.nav-open body { overflow: hidden; }   /* menyu açıqkən sc
 }
 section[id] { scroll-margin-top: calc(var(--header-h) + env(safe-area-inset-top, 0px) + var(--space-4)); }
 
-/* ===== Xüsusi kursor (elementləri yalnız JS yaradır) ===== */
-.cursor-dot, .cursor-ring {
-  position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;
-  opacity: 0; will-change: transform;
-  transition: opacity var(--dur) var(--ease-out);
-}
-.cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--primary); }
-.cursor-ring { width: 36px; height: 36px; margin: -18px 0 0 -18px; }
-.cursor-ring::before, .cursor-ring::after {
-  content: ""; position: absolute; inset: 0; border-radius: 50%;
-  transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
-}
-.cursor-ring::after  { border: 1.5px solid var(--primary); opacity: .55; }
-.cursor-ring::before { background: var(--primary); opacity: 0; }
-.cursor-dot.is-visible, .cursor-ring.is-visible { opacity: 1; }
-.cursor-ring.is-hover::after  { transform: scale(1.6); opacity: .9; }
-.cursor-ring.is-hover::before { transform: scale(1.6); opacity: .12; }
-.cursor-ring.is-down::after, .cursor-ring.is-down::before { transform: scale(.8); }
-.cursor-ring.is-hover.is-down::after, .cursor-ring.is-hover.is-down::before { transform: scale(1.35); }
-
 /* ===== Maqnit düymə (translate: hover/active transform-u ilə toqquşmur) ===== */
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .btn-primary {
