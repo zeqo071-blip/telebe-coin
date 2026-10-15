@@ -13,7 +13,7 @@
     { motion: '(prefers-reduced-motion: no-preference)', wide: '(min-width: 48rem)' },
     (ctx) => {
       const { motion, wide } = ctx.conditions;
-      if (!motion) return;
+      if (!motion || navigator.connection?.saveData) return;   // save-data: animasiyasız
 
       // 1) Bölmə başlıqları və son çağırış: yumşaq görünmə
       gsap.utils.toArray('[data-reveal]').forEach((el) => {

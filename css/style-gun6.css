@@ -1,0 +1,36 @@
+/* style-gun6.css – Gün 6 düzəlişləri. style.css və style-elave.css-dən SONRA yüklənir. */
+
+/* Kontrast: .btn-primary və nömrələrdə ağ mətn qradiyentin hər nöqtəsində ≥4.5:1 olsun (son rəng #A257F2 → #8E4BEF) */
+:root { --grad-brand: linear-gradient(135deg, #6C4BF0 0%, #8E4BEF 100%); }
+
+/* Fokus halqası: açıq rejimdə --violet-300 fonla 3:1 vermirdi */
+:focus-visible { outline-color: var(--primary); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) :focus-visible { outline-color: var(--violet-300); } }
+:root[data-theme="dark"] :focus-visible { outline-color: var(--violet-300); }
+
+/* Yalnız ekran oxuyucu üçün mətn */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* Menyu açıqkən scroll kilidi (iOS üçün əlavə) */
+html.nav-open, html.nav-open body { overflow: hidden; overscroll-behavior: none; }
+
+/* Coin animasiyasını dayandırma düyməsi (JS yaradır) */
+.coin-toggle {
+  display: inline-flex; align-items: center; min-height: 2.75rem; margin-top: var(--space-4);
+  padding: 0 var(--space-5); border: 1px solid var(--border); border-radius: var(--r-pill);
+  background: transparent; color: var(--text-muted); cursor: pointer;
+  font: var(--fw-medium) var(--text-sm)/1 var(--font-body);
+}
+@media (hover: hover) { .coin-toggle:hover { color: var(--text); border-color: var(--violet-300); } }
+
+/* 404 */
+.page-hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-8); }
+.page-hero__code {
+  display: block; margin-bottom: var(--space-2); color: var(--primary);
+  font: var(--fw-bold) var(--text-lg)/1 var(--font-display); letter-spacing: var(--tracking-heading);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .page-hero__code { color: var(--violet-300); } }
+:root[data-theme="dark"] .page-hero__code { color: var(--violet-300); }

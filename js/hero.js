@@ -17,7 +17,8 @@ function isWeakDevice() {
          (n.deviceMemory ?? 8) <= 2;
 }
 
-if (stage && canvas && !isWeakDevice()) {
+/* 'Hərəkəti azalt' açıqdırsa three.js heç yüklənmir, statik coin qalır */
+if (stage && canvas && !isWeakDevice() && !reduceMotion.matches) {
   const start = () => initCoin().catch(() => { /* statik coin qalır */ });
   if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 1500 });
   else setTimeout(start, 200);
@@ -105,7 +106,7 @@ async function initCoin() {
   tiltGroup.add(spin);
   scene.add(tiltGroup);
 
-  let t = 0, last = 0, raf = 0, visible = true, running = false;
+  let t = 0, last = 0, raf = 0, visible = true, running = false, userPaused = false;
   const target = { x: 0, y: 0 };
   const tilt = { x: 0, y: 0 };
   const render = () => renderer.render(scene, camera);
@@ -139,7 +140,7 @@ async function initCoin() {
   }
 
   function sync() {
-    const shouldRun = visible && !document.hidden && !reduceMotion.matches;
+    const shouldRun = visible && !document.hidden && !reduceMotion.matches && !userPaused;
     if (shouldRun && !running) {
       running = true;
       last = performance.now();
@@ -183,7 +184,21 @@ async function initCoin() {
     running = false;
     cancelAnimationFrame(raf);
     stage.classList.remove('is-3d');                   // statik coin geri qayıdır
+    toggle.remove();
   });
+
+  // WCAG 2.2.2: avtomatik hərəkəti dayandırma düyməsi
+  const LABEL_STOP = 'Coin animasiyasını dayandır', LABEL_PLAY = 'Coin animasiyasını davam etdir';
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'coin-toggle';
+  toggle.textContent = LABEL_STOP;
+  toggle.addEventListener('click', () => {
+    userPaused = !userPaused;
+    toggle.textContent = userPaused ? LABEL_PLAY : LABEL_STOP;
+    sync();
+  });
+  (hero.querySelector('.hero__copy') || hero).append(toggle);
 
   resize();
   render();                                            // ilk kadr hazır olmadan göstərmirik

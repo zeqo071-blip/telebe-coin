@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# DOMEN.az-ı real domenlə əvəz et
+Sitemap: https://DOMEN.az/sitemap.xml
